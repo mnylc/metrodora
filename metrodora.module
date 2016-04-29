@@ -100,14 +100,9 @@ function metrodora_islandora_collectionCModel_islandora_overview_object_alter(Ab
 /**
  * Metro's awesomely custom display of everything without FILTERs.
  *
- * @note This is a lot of copypasta, apologies but Metro wants it.
- *
- * @see islandora_basic_collection_get_query_info()
- *
- * @throws Exception if the object parameter is not set.
- *
  * @param array $params
- *   An array containing all the parameters, at least:
+ *   An array containing all the parameters.
+ *   At least:
  *   - object: An AbstractObject we're querying for.
  *   but may also contain:
  *   - page_size: The size of the page/number of results to return. Defaults to
@@ -125,6 +120,9 @@ function metrodora_islandora_collectionCModel_islandora_overview_object_alter(Ab
  *   Either 'view' or 'manage', its meant to repersent how the objects will be
  *   used.
  *
+ * @throws Exception
+ *   If the object parameter is not set.
+ *
  * @return array
  *   An array containing a number of keys used to describe the query,
  *   including all the values from $params (which haven't been unset in the
@@ -134,6 +132,8 @@ function metrodora_islandora_collectionCModel_islandora_overview_object_alter(Ab
  *   - itql; or,
  *   - sparql.
  *   - pid: The pid of the collection being queried.
+ *
+ * @see islandora_basic_collection_get_query_info()
  */
 function metrodora_get_all_objects_query_info(array $params, $type = 'view') {
   if (!isset($params['object'])) {
@@ -240,6 +240,26 @@ function metrodora_menu() {
     'file' => 'includes/metadata.inc',
     'weight' => 2,
   );
+  $items['islandora/object/%islandora_object/mods-metadata'] = array(
+    'title' => 'MODS XML',
+    'page callback' => 'metrodora_mods_tab',
+    'page arguments' => array(2),
+    'type' => MENU_LOCAL_TASK,
+    'access callback' => 'metrodora_mods_tab_access',
+    'access arguments' => array(2),
+    'file' => 'includes/metadata.inc',
+    'weight' => 3,
+  );
+  $items['islandora/object/%islandora_object/download_mods-metadata'] = array(
+    'title' => 'Download MODS XML',
+    'type' => MENU_CALLBACK,
+    'page callback' => 'metrodora_mods_complement_elements',
+    'page arguments' => array(2),
+    'access callback' => 'metrodora_mods_tab_access',
+    'access arguments' => array(2),
+    'delivery callback' => 'metrodora_mods_download',
+    'file' => 'includes/utilities.inc',
+  );
   return $items;
 }
 
@@ -247,14 +267,18 @@ function metrodora_menu() {
  * Implements hook_menu_alter().
  */
 function metrodora_menu_alter(&$items) {
-  $items['islandora/object/%islandora_object/manage']['weight'] = 4;
+  $items['islandora/object/%islandora_object/manage']['weight'] = 6;
   if (isset($items['islandora/object/%islandora_object/ip_embargo'])) {
-    $items['islandora/object/%islandora_object/ip_embargo']['weight'] = 3;
+    $items['islandora/object/%islandora_object/ip_embargo']['weight'] = 5;
   }
   // Remove the 'Print' tab if it exists.
   if (isset($items['islandora/object/%islandora_object/print'])) {
-    // Remove the print tab, presurving the menu path.
+    // Remove the print tab, preserving the menu path.
     $items['islandora/object/%islandora_object/print_object']['type'] = MENU_CALLBACK;
+  }
+  // Change MARCXML tab position, if present.
+  if (isset($items['islandora/object/%islandora_object/view_mods_as_marcxml'])) {
+    $items['islandora/object/%islandora_object/view_mods_as_marcxml']['weight'] = 4;
   }
 }
 
@@ -315,6 +339,24 @@ function metrodora_metadata_tab_access(AbstractObject $object) {
 }
 
 /**
+ * Access callback wrapper for viewing/downloading MODS datastream.
+ *
+ * @param AbstractObject $object
+ *   An AbstractObject representing a Fedora object.
+ *
+ * @return bool
+ *   TRUE if the user can see/download Mods in-a-tab, FALSE otherwise.
+ */
+function metrodora_mods_tab_access(AbstractObject $object) {
+  module_load_include('inc', 'metrodora', 'includes/utilities');
+  $access = FALSE;
+  if (is_object($object) && isset($object['MODS'])) {
+    $access = islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['MODS']);
+  }
+  return $access;
+}
+
+/**
  * Access callback for viewing child metadata tab.
  *
  * @param AbstractObject $object
@@ -362,7 +404,7 @@ function metrodora_build_repeatable_element_array(&$form, $field_key = FALSE) {
  * @param array $form
  *   An array representing a form within Drupal.
  * @param array $elements_to_enable
- *   An array containing references to form elements to be enabled
+ *   An array containing references to form elements to be enabled.
  * @param string $namespace
  *   A string holding the namespace of the collection being ingested into.
  */
@@ -560,7 +602,7 @@ function metrodora_islandora_compound_object_management_control_paths() {
  *
  * Tab panel elements that you wish to grant access to based on collection
  * needs to be done in a modify to the original xml form definition before it
- * is loaded into the form.  Only Needed to modify for murrayhill and zoomaps.
+ * is loaded into the form. Only Needed to modify for murrayhill and zoomaps.
  * IMPORTANT: since this modifies the xml of the form template before it is
  * loaded you only need to set access on the first element in the tab panel
  * and the reset will be done through inheritance when the form is actually
@@ -568,7 +610,6 @@ function metrodora_islandora_compound_object_management_control_paths() {
  *
  * @param array $form
  *   The form array before the initial form builder XML is saved in.
- *
  * @param array $form_state
  *   The form_state array.
  */

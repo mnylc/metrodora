@@ -68,3 +68,24 @@ function metrodora_compound_child_metadata(AbstractObject $object) {
     ),
   );
 }
+
+/**
+ * Renders the MODS tab.
+ *
+ * @pararm AbstractObject $object
+ *   The object that containes  the MODS record.
+ *
+ * @return array
+ *   A renderable array representing the tab.
+ */
+function metrodora_mods_tab(AbstractObject $object) {
+  module_load_include('inc', 'islandora', 'includes/utilities');
+  return array(
+    'link' => array(
+      '#markup' => l(t('Download MODS XML'), "islandora/object/{$object->id}/download_mods-metadata"),
+    ),
+    'mods' => array(
+      '#markup' => metrodora_transform_mods_to_html($object),
+    ),
+  );
+}
