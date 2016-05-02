@@ -248,7 +248,7 @@ function metrodora_menu() {
     'access callback' => 'metrodora_mods_tab_access',
     'access arguments' => array(2),
     'file' => 'includes/metadata.inc',
-    'weight' => 3,
+    'weight' => 4,
   );
   $items['islandora/object/%islandora_object/download_mods-metadata'] = array(
     'title' => 'Download MODS XML',
@@ -278,7 +278,7 @@ function metrodora_menu_alter(&$items) {
   }
   // Change MARCXML tab position, if present.
   if (isset($items['islandora/object/%islandora_object/view_mods_as_marcxml'])) {
-    $items['islandora/object/%islandora_object/view_mods_as_marcxml']['weight'] = 4;
+    $items['islandora/object/%islandora_object/view_mods_as_marcxml']['weight'] = 3;
   }
 }
 
