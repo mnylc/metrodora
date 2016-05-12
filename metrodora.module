@@ -241,7 +241,7 @@ function metrodora_menu() {
     'weight' => 2,
   );
   $items['islandora/object/%islandora_object/mods-metadata'] = array(
-    'title' => 'MODS XML',
+    'title' => 'MODS',
     'page callback' => 'metrodora_mods_tab',
     'page arguments' => array(2),
     'type' => MENU_LOCAL_TASK,
@@ -279,6 +279,8 @@ function metrodora_menu_alter(&$items) {
   // Change MARCXML tab position, if present.
   if (isset($items['islandora/object/%islandora_object/view_mods_as_marcxml'])) {
     $items['islandora/object/%islandora_object/view_mods_as_marcxml']['weight'] = 3;
+    $items['islandora/object/%islandora_object/view_mods_as_marcxml']['title'] = 'MARC';
+    $items['islandora/object/%islandora_object/view_mods_as_marcxml']['access callback'] = 'metrodora_marcxml_tab_access';
   }
 }
 
@@ -350,7 +352,8 @@ function metrodora_metadata_tab_access(AbstractObject $object) {
 function metrodora_mods_tab_access(AbstractObject $object) {
   module_load_include('inc', 'metrodora', 'includes/utilities');
   $access = FALSE;
-  if (is_object($object) && isset($object['MODS'])) {
+  // This disables mods tab for collection objects
+  if (is_object($object) && isset($object['MODS']) && !in_array('islandora:collectionCModel', $object->models)) {
     $access = islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['MODS']);
   }
   return $access;
