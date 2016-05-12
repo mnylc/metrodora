@@ -357,6 +357,24 @@ function metrodora_mods_tab_access(AbstractObject $object) {
 }
 
 /**
+ * Access callback wrapper for viewing/downloading MARCXML datastream.
+ *
+ * @param AbstractObject $object
+ *   An AbstractObject representing a Fedora object.
+ *
+ * @return bool
+ *   TRUE if the user can see/download Marcxml in-a-tab, FALSE otherwise.
+ */
+function metrodora_marcxml_tab_access(AbstractObject $object) {
+  $access = FALSE;
+  // This disables marcxml for collection objects
+  if (islandora_marcxml_access_callback($object) && !in_array('islandora:collectionCModel', $object->models)) {
+    $access = TRUE;
+  }
+  return $access;
+}
+
+/**
  * Access callback for viewing child metadata tab.
  *
  * @param AbstractObject $object
