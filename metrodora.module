@@ -407,13 +407,14 @@ function metrodora_compound_child_metadata_access(AbstractObject $object) {
  */
 function metrodora_build_repeatable_element_array(&$form, $field_key = FALSE) {
   $elements = array();
-
-  foreach (element_children($form) as $key) {
-    if ($field_key) {
-      $elements[] = &$form[$key][$field_key];
-    }
-    else {
-      $elements[] = &$form[$key];
+  if (!empty($form)) {
+    foreach (element_children($form) as $key) {
+      if ($field_key) {
+        $elements[] = &$form[$key][$field_key];
+      }
+      else {
+        $elements[] = &$form[$key];
+      }
     }
   }
   return $elements;
