@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Metro specific Islandora functionality.
@@ -299,12 +300,13 @@ function metrodora_menu_alter(&$items) {
 function metrodora_admin_paths() {
   // This little hook allows this menu items to be configured
   // to be openend in an Overlay plus other goodies.
-  // It's more flexible than passing option with 
+  // It's more flexible than passing option with
   // fragment to drupal_goto.
   $paths = array();
   $paths['islandora/object/*/edit_mods-metadata'] = TRUE;
   return $paths;
 }
+
 /**
  * Implements hook_form_alter().
  */
@@ -373,7 +375,7 @@ function metrodora_metadata_tab_access(AbstractObject $object) {
 function metrodora_mods_tab_access(AbstractObject $object) {
   module_load_include('inc', 'metrodora', 'includes/utilities');
   $access = FALSE;
-  // This disables mods tab for collection objects
+  // This disables mods tab for collection objects.
   if (is_object($object) && isset($object['MODS']) && !in_array('islandora:collectionCModel', $object->models)) {
     $access = islandora_datastream_access(ISLANDORA_VIEW_OBJECTS, $object['MODS']);
   }
@@ -391,7 +393,7 @@ function metrodora_mods_tab_access(AbstractObject $object) {
  */
 function metrodora_marcxml_tab_access(AbstractObject $object) {
   $access = FALSE;
-  // This disables marcxml for collection objects
+  // This disables marcxml for collection objects.
   if (islandora_marcxml_access_callback($object) && !in_array('islandora:collectionCModel', $object->models)) {
     $access = TRUE;
   }
@@ -410,10 +412,9 @@ function metrodora_marcxml_tab_access(AbstractObject $object) {
 function metrodora_mods_edit_access(AbstractObject $object) {
   module_load_include('inc', 'metrodora', 'includes/utilities');
   $access = FALSE;
-  // This disables mods tab for collection objects
   if (is_object($object) && isset($object['MODS'])) {
     module_load_include('inc', 'islandora', 'includes/utilities');
-    //Mimics same functioality present in the manage tag -> datastreams
+    // Mimics same functionality present in the manage tab -> datastreams.
     $edit_registry = islandora_build_datastream_edit_registry($object['MODS']);
     $access = count($edit_registry) > 0 && islandora_datastream_access(ISLANDORA_METADATA_EDIT, $object['MODS']);
   }
@@ -425,7 +426,6 @@ function metrodora_mods_edit_access(AbstractObject $object) {
  *
  * @param AbstractObject $object
  *   An AbstractObject representing a Fedora object.
- *
  */
 function metrodora_mods_edit_callback(AbstractObject $object) {
   drupal_goto("islandora/object/{$object->id}/datastream/MODS/edit");
