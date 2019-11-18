@@ -275,3 +275,110 @@ function metrodora_permission() {
 function metrodora_item_description_tab_access(AbstractObject $object) {
   return islandora_object_access(METRODORA_ITEM_TAB_PERMISSION, $object) && metrodora_compound_child_metadata_access($object);
 }
+
+/**
+ * Implements hook_theme().
+ */
+function metrodora_theme($existing, $type, $theme, $path) {
+  return [
+    'metrodora_slideshow_widget' => [
+      'file' => 'theme/theme.inc',
+      'template' => 'theme/metrodora-slideshow-widget',
+      'pattern' => 'metrodora-slideshow-widget__',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function metrodora_block_info() {
+  $blocks['metrodora_slideshow_widget'] = [
+    'info' => t('Islandora Objects Metrodora Slideshow'),
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '<front>',
+    'cache' => DRUPAL_NO_CACHE,
+  ];
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function metrodora_block_view($delta = '') {
+  $block = [];
+  switch ($delta) {
+    case 'metrodora_slideshow_widget':
+          module_load_include('inc', 'metrodora', 'includes/blocks');
+          $block['subject'] = NULL;
+          $block['content'] = metrodora_slideshow_block();
+      break;
+    default:
+  }
+  return $block;
+}
+
+/**
+ * Implements hook_block_configure().
+ */
+function metrodora_block_configure($delta = '') {
+  $form = [];
+
+  switch ($delta) {
+    case 'metrodora_slideshow_widget':
+      module_load_include('inc', 'islandora', 'includes/utilities');
+      $options = islandora_get_content_models();
+      $selected = variable_get(
+        'metrodora_slideshow_enabled_content_models',
+        ['islandora:sp_large_image_cmodel']
+      );
+      foreach ($selected as $cmodel) {
+        if (isset($options[$cmodel])) {
+          $options = [$cmodel => $options[$cmodel]] + $options;
+        }
+      }
+      foreach ($options as $key => $value) {
+        $rows[$key] = [
+          'pid' => $key,
+          'title' => $value['label'],
+        ];
+        in_array(
+          $key,
+          $selected
+        ) ? $defaults[$key] = TRUE : $defaults[$key] = FALSE;
+      }
+      $header = [
+        'pid' => ['data' => t('PID')],
+        'title' => ['data' => t('Content Model')],
+      ];
+
+      $form['intro'] = [
+        '#type' => 'item',
+        '#title' => 'Select Islandora Content Models.',
+        '#description' => t(
+          'Only Objects with selected CMODELS will be included in the Slideshow'
+        ),
+      ];
+      $form['the_table'] = [
+        '#type' => 'tableselect',
+        '#header' => $header,
+        '#options' => $rows,
+        '#default_value' => $defaults,
+      ];
+
+      break;
+  }
+  return $form;
+}
+
+/**
+ * Implements hook_block_save().
+ */
+function metrodora_block_save($delta = '', $edit = []) {
+  switch ($delta) {
+    case 'metrodora_slideshow_widget':
+      $enabled = array_filter($edit['the_table']);
+      variable_set('metrodora_slideshow_enabled_content_models', $enabled);
+      break;
+  }
+}

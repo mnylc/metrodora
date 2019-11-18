@@ -1,8 +1,9 @@
 name = Metrodora
-description = "Custom Islandora functionality for Metro"
+description = "Custom Islandora functionality for Metro Driven Sites"
 package = Islandora
 dependencies[] = islandora
 dependencies[] = islandora_basic_collection
 dependencies[] = islandora_compound_object
 dependencies[] = xml_form_builder
+dependencies[] = islandora_solr
 core = 7.x
