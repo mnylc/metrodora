@@ -38,7 +38,7 @@ function template_preprocess_metrodora_slideshow_widget(array &$variables) {
         $token = islandora_get_object_token($solrobject['PID'], 'JP2', $uses = 1);
         $info = islandora_openseadragon_tile_source($solrobject['PID'], 'JP2', $token);
         $info = substr($info, 0,strlen($info)- strlen('info.json'));
-        $info = $info . '/FULL/960,/0/default.jpg';
+        $info = $info . 'FULL/960,/0/default.jpg';
         //http://ec2-3-221-53-63.compute-1.amazonaws.com/iiif/2/newarkeagles%253A0411b3c1-22b5-4fda-a34f-a3adca715a7a%257EJP2/0,4096,3668,541/917,/0/default.jpg
         dpm($info);
       }
