@@ -13,7 +13,7 @@
 function template_preprocess_metrodora_slideshow_widget(array &$variables) {
 
   module_load_include('inc', 'islandora_solr', 'query_processor');
-  module_load_include('inc', 'islandora', 'authtoken');
+  module_load_include('inc', 'islandora', 'authtokens');
   module_load_include('inc', 'islandora_openseadragon', 'utilities');
 
   //select?facet=true&facet.mincount=2&facet.limit=20&facet.field=RELS_EXT_hasModel_uri_ms&facet.field=ancestors_models_ms&facet.field=ancestors_ms&qf=dc.title^5+dc.subject^2+dc.description^2+dc.creator^2++mod$
