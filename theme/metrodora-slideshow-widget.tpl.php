@@ -7,4 +7,5 @@
 ?>
 <?php if ($images): ?>
     <div>The block!</div>
+                        <h3>Chicago</h3>
 <?php endif;?>
