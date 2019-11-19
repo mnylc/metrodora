@@ -5,7 +5,6 @@
  * islandora-matomo-widget.tpl.php
  */
 ?>
-<?php dpm($objects); ?>
 <?php if (count($objects)): ?>
         <div id="FrontPageCarousel" class="carousel slide" data-ride="carousel">
             <!-- Indicators -->
