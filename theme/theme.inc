@@ -23,10 +23,11 @@ function template_preprocess_metrodora_slideshow_widget(array &$variables) {
 
   $query_processor->solrParams['fl'] = 'PID, fgs_label_s, RELS_EXT_isMemberOfCollection_uri_s';
   $query_processor->solrParams['fq'][] = 'fedora_datastream_version_OBJ_SIZE_ms:[* TO 0}';
-  $query_processor->solrParams['fq'][] = 'RELS_EXT_hasModel_uri_ms:"info/fedora:islandora_sp_large_image"';
+  $query_processor->solrParams['fq'][] = 'RELS_EXT_hasModel_uri_ms:"info:fedora/islandora_sp_large_image"';
   try {
-    $query_processor->executeQuery();
+    $query_processor->executeQuery(FALSE);
     $solr_results = $query_processor->islandoraSolrResult['response'];
+    dpm($solr_results);
     if ($solr_results['numFound'] > 1) {
       dpm($solr_results);
     }
