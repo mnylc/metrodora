@@ -1,0 +1,72 @@
+<?php
+/**
+* Implements hook_schema().
+*/
+function metrodora_schema() {
+$schema = array();
+// Install Islandora Object QA Schema
+$schema['metrodora_object_qa'] = array(
+  'description' => 'Holds the queue of object entries being batch ingested.',
+  'fields' => array(
+    'pid' => array(
+      'description' => 'PID of the object.',
+      'type' => 'varchar',
+      'not null' => TRUE,
+      'length' => 255,
+    ),
+    'comment' => array(
+      'description' => 'QA Comment',
+      'type' => 'varchar',
+      'not null' => TRUE,
+      'length' => 255,
+    ),
+    'good' => array(
+      'description' => 'Boolean indicating if the Object is good.',
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 1,
+    ),
+    'media_missing' => array(
+      'description' => 'Boolean indicating if the Object mas Media Missing.',
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 1,
+    ),
+    'metadata_missing' => array(
+      'description' => 'Boolean indicating if the Object has Metadata Missing.',
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 1,
+    ),
+    'metadata_value_wrong' => array(
+      'description' => 'Boolean indicating if the Object has a Wrong metadata value.',
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 1,
+    ),
+    'other_issue' => array(
+      'description' => 'Boolean indicating if the Object has other issues.',
+      'type' => 'int',
+      'not null' => TRUE,
+      'default' => 1,
+    ),
+    'uid' => array(
+      'description' => 'User ID that update this record',
+      'type' => 'int',
+      'unsigned' => TRUE,
+      'not null' => TRUE,
+      'default' => 1,
+    ),
+  ),
+    'primary key' => array('pid', 'uid'),
+    'indexes' => array(
+      'pid' => array('pid'),
+      'good' => array('good'),
+      'media_missing' => array('media_missing'),
+      'metadata_value_wrong' => array('metadata_value_wrong'),
+      'other_issue' => array('other_issue'),
+
+    ),
+);
+return $schema;
+}

@@ -6,6 +6,7 @@
  */
 
 define('METRODORA_ITEM_TAB_PERMISSION', 'view item description tab');
+define('METRODORA_OBJECT_QA', 'submit object qa');
 
 /**
  * Implements hook_islandora_oai_get_xsl_files().
@@ -260,6 +261,10 @@ function metrodora_permission() {
       'title' => t('View item description tab'),
       'description' => t('Display the Item Description tab to the specified role.'),
     ),
+    METRODORA_OBJECT_QA => array(
+      'title' => t('Submit QA regarding an ingested Object'),
+      'description' => t('Allows the specified role to Submit QA for an Object.'),
+    ),
   );
 }
 
@@ -299,6 +304,12 @@ function metrodora_block_info() {
     'pages' => '<front>',
     'cache' => DRUPAL_NO_CACHE,
   ];
+  $blocks['metrodora_qa'] = [
+    'info' => t('Islandora Object QA'),
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '/islandora/object/*',
+    'cache' => DRUPAL_NO_CACHE,
+  ];
   return $blocks;
 }
 
@@ -313,6 +324,18 @@ function metrodora_block_view($delta = '') {
           $block['subject'] = NULL;
           $block['content'] = metrodora_slideshow_block();
       break;
+    case 'metrodora_qa':
+      if (user_access(METRODORA_OBJECT_QA))
+    {
+        $object = menu_get_object('islandora_object', 2);
+        if ($object && islandora_object_access(
+            ISLANDORA_VIEW_OBJECTS,
+            $object)) {
+            module_load_include('inc', 'metrodora', 'includes/blocks');
+            $block['subject'] = NULL;
+            $block['content'] = metrodora_qa_block($object);
+        }
+      }
     default:
   }
   return $block;
