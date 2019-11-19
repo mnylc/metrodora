@@ -13,6 +13,8 @@
 function template_preprocess_metrodora_slideshow_widget(array &$variables) {
 
   module_load_include('inc', 'islandora_solr', 'query_processor');
+  module_load_include('inc', 'islandora', 'authtoken');
+  module_load_include('inc', 'islandora_openseadragon', 'utilities');
 
   //select?facet=true&facet.mincount=2&facet.limit=20&facet.field=RELS_EXT_hasModel_uri_ms&facet.field=ancestors_models_ms&facet.field=ancestors_ms&qf=dc.title^5+dc.subject^2+dc.description^2+dc.creator^2++mod$
   $image_pids = [];
@@ -30,14 +32,22 @@ function template_preprocess_metrodora_slideshow_widget(array &$variables) {
   try {
     $query_processor->executeQuery(FALSE);
     $solr_results = $query_processor->islandoraSolrResult['response'];
-    dpm($solr_results);
     if ($solr_results['numFound'] > 1) {
-      dpm($solr_results);
+      $variables['objects'] = $solr_results['objects'];
+      foreach($solr_results['objects'] as $key => &$solrobject) {
+        $token = islandora_get_object_token($solrobject['PID'], 'JP2', $uses = 1);
+        dpm(islandora_openseadragon_tile_source($solrobject['PID'], 'JP2', $token));
+      }
+
+
+    }
+    else {
+      $variables['objects'] = [];
     }
   } catch (Exception $exception) {
     dpm($exception->getMessage());
   }
-  $variables['images'] = [];
+
 }
 
 
