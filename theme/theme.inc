@@ -35,8 +35,8 @@ function template_preprocess_metrodora_slideshow_widget(array &$variables) {
     if ($solr_results['numFound'] > 1) {
 
       foreach($solr_results['objects'] as $key => &$solrobject) {
-        $token = islandora_get_object_token($solrobject['PID'], 'JP2', $uses = 1);
-        $info = islandora_openseadragon_tile_source($solrobject['PID'], 'JP2', $token);
+        $token = islandora_get_object_token($solrobject['PID'], 'OBJ', $uses = 1);
+        $info = islandora_openseadragon_tile_source($solrobject['PID'], 'OBJ', $token);
         $info = substr($info, 0,strlen($info)- strlen('info.json'));
         $info = $info . 'full/,500/0/default.jpg';
         $solrobject['iiif_url'] = $info;
