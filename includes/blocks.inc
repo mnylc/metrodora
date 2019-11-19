@@ -42,7 +42,7 @@ function metrodora_qa_block(AbstractObject $object = NULL) {
   $output = '';
   if ($object) {
     $pid = $object->id;
-    $output = drupal_get_form(metrodora_qa_form($pid));
+    $output = drupal_get_form('metrodora_qa_form',$pid);
   }
   return output;
 }
