@@ -25,6 +25,8 @@ function template_preprocess_metrodora_slideshow_widget(array &$variables) {
 
   $query_processor->solrParams['fl'] = 'PID, fgs_label_s, RELS_EXT_isMemberOfCollection_uri_s';
   $query_processor->solrParams['fq'][] = '-fedora_datastream_version_OBJ_SIZE_ms:[* TO 0}';
+  // Only get images 1Mb in size
+  $query_processor->solrParams['fq'][] = 'fedora_datastream_latest_OBJ_SIZE_ms:[102400 TO *]';
   $query_processor->solrParams['fq'][] = 'RELS_EXT_hasModel_uri_ms:"info:fedora/islandora:sp_large_image_cmodel"';
   $query_processor->solrParams['sort']= "random_{$random_string} ASC";
   $query_processor->solrStart = 0;
