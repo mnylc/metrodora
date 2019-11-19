@@ -25,7 +25,7 @@
               <?php foreach ($objects as $object): ?>
 
                 <div class="item active">
-                    <img src="<?php echo $object['iif_url']; ?>" alt="<?php echo $object['object_label']; ?>" style="width:100%;">
+                    <img src="<?php echo $object['iiif_url']; ?>" alt="<?php echo $object['object_label']; ?>" style="width:100%;">
                     <div class="carousel-caption">
                         <h3>Los Angeles</h3>
                         <p>LA is always so much fun!</p>
