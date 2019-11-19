@@ -24,7 +24,7 @@ function template_preprocess_metrodora_slideshow_widget(array &$variables) {
   $query_processor->buildQuery($query);
 
   $query_processor->solrParams['fl'] = 'PID, fgs_label_s, RELS_EXT_isMemberOfCollection_uri_s';
-  $query_processor->solrParams['fq'][] = '!fedora_datastream_version_OBJ_SIZE_ms:[* TO 0}';
+  $query_processor->solrParams['fq'][] = '-fedora_datastream_version_OBJ_SIZE_ms:[* TO 0}';
   $query_processor->solrParams['fq'][] = 'RELS_EXT_hasModel_uri_ms:"info:fedora/islandora:sp_large_image_cmodel"';
   $query_processor->solrParams['sort']= "random_{$random_string} ASC";
   $query_processor->solrStart = 0;
@@ -38,7 +38,7 @@ function template_preprocess_metrodora_slideshow_widget(array &$variables) {
         $token = islandora_get_object_token($solrobject['PID'], 'JP2', $uses = 1);
         $info = islandora_openseadragon_tile_source($solrobject['PID'], 'JP2', $token);
         $info = substr($info, 0,strlen($info)- strlen('info.json'));
-        $info = $info . 'full/960,/0/default.jpg';
+        $info = $info . 'full/,500/0/default.jpg';
         $solrobject['iiif_url'] = $info;
       }
       $variables['objects'] = $solr_results['objects'];
