@@ -26,9 +26,10 @@
               <?php foreach ($objects as $key => $object): ?>
 
                 <div class="item <?php if ($key == 0) { print ('active');} ?>">
-                    <img src="<?php echo $object['iiif_url']; ?>" alt="<?php echo $object['object_label']; ?>" style="width:100%;">
+                    <a href="<?php echo $object['object_url']; ?>">
+                        <img src="<?php echo $object['iiif_url']; ?>" alt="<?php echo $object['object_label']; ?>" style="width:100%;">
+                    </a>
                     <div class="carousel-caption">
-                        <h3>NPL</h3>
                         <p><?php echo $object['object_label']; ?></p>
                     </div>
                 </div>
