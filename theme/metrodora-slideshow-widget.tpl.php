@@ -7,7 +7,6 @@
 ?>
 <?php dpm($objects); ?>
 <?php if (count($objects)): ?>
-    <div class="container">
         <div id="FrontPageCarousel" class="carousel slide" data-ride="carousel">
             <!-- Indicators -->
             <ol class="carousel-indicators">
@@ -24,9 +23,9 @@
             </ol>
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
-              <?php foreach ($objects as $object): ?>
+              <?php foreach ($objects as $key => $object): ?>
 
-                <div class="item active">
+                <div class="item <?php if ($key == 0) { print ('active');} ?>">
                     <img src="<?php echo $object['iiif_url']; ?>" alt="<?php echo $object['object_label']; ?>" style="width:100%;">
                     <div class="carousel-caption">
                         <h3>NPL</h3>
@@ -46,5 +45,4 @@
                 <span class="sr-only">Next</span>
             </a>
         </div>
-    </div>
 <?php endif;?>
