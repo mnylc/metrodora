@@ -33,7 +33,7 @@ function template_preprocess_metrodora_slideshow_widget(array &$variables) {
     $query_processor->executeQuery(FALSE);
     $solr_results = $query_processor->islandoraSolrResult['response'];
     if ($solr_results['numFound'] > 1) {
-      $variables['objects'] = $solr_results['objects'];
+
       foreach($solr_results['objects'] as $key => &$solrobject) {
         $token = islandora_get_object_token($solrobject['PID'], 'JP2', $uses = 1);
         $info = islandora_openseadragon_tile_source($solrobject['PID'], 'JP2', $token);
@@ -41,8 +41,7 @@ function template_preprocess_metrodora_slideshow_widget(array &$variables) {
         $info = $info . 'full/960,/0/default.jpg';
         $solrobject['iiif_url'] = $info;
       }
-
-
+      $variables['objects'] = $solr_results['objects'];
     }
     else {
       $variables['objects'] = [];
