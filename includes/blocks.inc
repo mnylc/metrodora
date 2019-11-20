@@ -66,9 +66,16 @@ function metrodora_qa_form($form, &$form_state, $pid = NULL) {
   );
 
   $form['qa'] = array(
-    '#title' => t('Digital Object QA'),
     '#type' => 'checkboxes',
-    '#description' => t('QA this Digital Object'),
+    '#options' => $qaoptions,
+    '#required' => TRUE,
+  );
+  $form['comment'] = array(
+    '#title' => t('Add a comment'),
+    '#type' => 'textfield',
+    '#size' => '45',
+    '#maxlength' => '254',
+    '#description' => t('This field is optional'),
     '#options' => $qaoptions,
   );
 
@@ -83,7 +90,7 @@ function metrodora_qa_form($form, &$form_state, $pid = NULL) {
 /**
  * Metrodora QA form submit function.
  */
-function metrodora_qa_submit($form, &$form_state) {
+function metrodora_qa_form_submit($form, &$form_state) {
   // You need the have Devel module enabled for dpm() to work.
   dpm($form_state);
 }
