@@ -118,6 +118,16 @@ function metrodora_qa_form_submit($form, &$form_state) {
    );
 
   $status = metrodora_qa_merge_object($form_state['values']['pid'], $data);
-  dpm($status);
-  drupal_set_message('Thanks for your feedback!','status');
+  switch ($status) {
+    case 1:
+      drupal_set_message('Thanks for your feedback!', 'status');
+      break;
+    case 2:
+      drupal_set_message('Feedback on this Object was updated!', 'status');
+      break;
+    case 0:
+      drupal_set_message('Ups. Something went wrong storing your feedback.', 'error');
+      break;
+  }
+
 }
