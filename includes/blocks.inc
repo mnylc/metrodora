@@ -53,7 +53,13 @@ function metrodora_qa_form($form, &$form_state, $pid = NULL) {
   }
   module_load_include('inc','metrodora','includes/db');
   $current_entry = metrodora_qa_get($pid);
-  dpm($current_entry);
+  $comment = isset($current_entry['comment']) ? $current_entry['comment'] : '';
+  unset($current_entry['pid']);
+  unset($current_entry['comment']);
+  unset($current_entry['uid']);
+
+  $qadefaults = count($current_entry) ? array_filter($current_entry):[];
+
   $qaoptions = array(
     'good' => t('Object looks good!'),
     'media_missing' => t('Media has problems.'),
@@ -72,6 +78,7 @@ function metrodora_qa_form($form, &$form_state, $pid = NULL) {
     '#type' => 'checkboxes',
     '#options' => $qaoptions,
     '#required' => TRUE,
+    '#default_value' => $qadefaults,
   );
   $form['comment'] = array(
     '#title' => t('Add a comment'),
@@ -79,6 +86,7 @@ function metrodora_qa_form($form, &$form_state, $pid = NULL) {
     '#size' => '45',
     '#maxlength' => '254',
     '#description' => t('This field is optional.'),
+    '#default_value' => $comment,
   );
 
   $form['submit'] = array(
