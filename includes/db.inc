@@ -48,6 +48,24 @@ function metrodora_qa_merge_object($pid, $data) {
 }
 
 /**
+ * Get Single qa objects.
+ *
+ * @param int $set_id
+ *   An integer identifying a batch set.
+ *
+ * @return int
+ *   The count of queued objects in the specified batch set.
+ */
+function metrodora_qa_get($pid) {
+  if ($pid !== NULL) {
+    $entry = db_select('metrodora_object_qa', 'q')
+      ->fields('q', '*')
+      ->execute();
+    return $entry->fetchCol();
+  }
+}
+
+/**
  * Get the count of qa objects.
  *
  * @param int $set_id
