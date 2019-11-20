@@ -128,6 +128,7 @@ function metrodora_qa_form_submit($form, &$form_state) {
     case 0:
       drupal_set_message('Ups. Something went wrong storing your feedback.', 'error');
       break;
+    default:
   }
 
 }
