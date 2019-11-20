@@ -51,6 +51,9 @@ function metrodora_qa_form($form, &$form_state, $pid = NULL) {
   if (!$pid) {
     return [];
   }
+  module_load_include('inc','metrodora','includes/db');
+  $current_entry = metrodora_qa_get($pid);
+  dpm($current_entry);
   $qaoptions = array(
     'good' => t('Object looks good!'),
     'media_missing' => t('Media has problems.'),
@@ -91,12 +94,12 @@ function metrodora_qa_form($form, &$form_state, $pid = NULL) {
  */
 function metrodora_qa_form_submit($form, &$form_state) {
   // You need the have Devel module enabled for dpm() to work.
+  module_load_include('inc','metrodora','includes/db');
   global $user;
   $uid = $user->uid;
   dpm($uid);
   dpm($form_state);
   $data = array(
-    'pid' => $form_state['values']['pid'],
     'comment' => trim($form_state['values']['comment']),
     'good' => $form_state['values']['qa']['good'] ? 1 : 0,
     'media_missing' => $form_state['values']['qa']['media_missing'] ? 1 : 0,
@@ -106,4 +109,5 @@ function metrodora_qa_form_submit($form, &$form_state) {
     'uid' => $uid
    );
   dpm($data);
+  metrodora_qa_merge_object($form_state['values']['pid']);
 }
