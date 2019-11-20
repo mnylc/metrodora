@@ -38,13 +38,17 @@ function metrodora_qa_delete_object($pid) {
  * );
  */
 function metrodora_qa_merge_object($pid, $data) {
-
-  db_merge('metrodora_object_qa')
-    ->key(array('pid' => $pid))
-    ->fields(
-      $data
-    )
-    ->execute();
+  try {
+    $status = db_merge('metrodora_object_qa')
+      ->key(['pid' => $pid])
+      ->fields(
+        $data
+      )
+      ->execute();
+  } catch (Exception $exception) {
+      return FALSE;
+  }
+  return $status;
 }
 
 /**

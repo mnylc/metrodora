@@ -107,8 +107,6 @@ function metrodora_qa_form_submit($form, &$form_state) {
   module_load_include('inc','metrodora','includes/db');
   global $user;
   $uid = $user->uid;
-  dpm($uid);
-  dpm($form_state);
   $data = array(
     'comment' => trim($form_state['values']['comment']),
     'good' => $form_state['values']['qa']['good'] ? 1 : 0,
@@ -118,6 +116,8 @@ function metrodora_qa_form_submit($form, &$form_state) {
     'other_issue' => $form_state['values']['qa']['other_issue'] ? 1 : 0,
     'uid' => $uid
    );
-  dpm($data);
-  metrodora_qa_merge_object($form_state['values']['pid'], $data);
+
+  $status = metrodora_qa_merge_object($form_state['values']['pid'], $data);
+  dpm($status);
+  drupal_set_message('Thanks for your feedback!','status');
 }
