@@ -109,5 +109,5 @@ function metrodora_qa_form_submit($form, &$form_state) {
     'uid' => $uid
    );
   dpm($data);
-  metrodora_qa_merge_object($form_state['values']['pid']);
+  metrodora_qa_merge_object($form_state['values']['pid'], $data);
 }
