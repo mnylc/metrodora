@@ -60,6 +60,7 @@ function metrodora_qa_get($pid) {
   if ($pid !== NULL) {
     $entry = db_select('metrodora_object_qa', 'q')
       ->fields('q')
+      ->condition('pid',$pid,'=')
       ->execute();
     return $entry->fetchAssoc();
   }
@@ -76,7 +77,7 @@ function metrodora_qa_get($pid) {
  */
 function metrodora_qa_get_count() {
   $count = db_select('metrodora_object_qa', 'q')
-    ->fields('q', array())
+    ->fields('q', array('pid'))
     ->countQuery()
     ->execute()
     ->fetchField();
