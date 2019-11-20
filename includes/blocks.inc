@@ -58,7 +58,7 @@ function metrodora_qa_form($form, &$form_state, $pid = NULL) {
   unset($current_entry['comment']);
   unset($current_entry['uid']);
 
-  $qadefaults = count($current_entry) ? array_filter($current_entry):[];
+  $qadefaults = count($current_entry) ? array_keys(array_filter($current_entry)):[];
 
   $qaoptions = array(
     'good' => t('Object looks good!'),
