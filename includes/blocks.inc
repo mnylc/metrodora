@@ -52,11 +52,11 @@ function metrodora_qa_form($form, &$form_state, $pid = NULL) {
     return [];
   }
   $qaoptions = array(
-    'all_good' => t('Object looks good.'),
-    'media_missing' => t('Media is missing.'),
+    'all_good' => t('Object looks good!'),
+    'media_missing' => t('Media has problems.'),
     'metadata_missing' => t('Metadata is incomplete.'),
-    'metadata_wrong' => t('One/More than one Metadata Value is wrong.'),
-    'other_wrong' => t('There is another issue'),
+    'metadata_wrong' => t('One/more-than-one Metadata value is wrong.'),
+    'other_wrong' => t('There are other issues'),
   );
 
   # the drupal checkboxes form field definition
@@ -69,6 +69,7 @@ function metrodora_qa_form($form, &$form_state, $pid = NULL) {
     '#type' => 'checkboxes',
     '#options' => $qaoptions,
     '#required' => TRUE,
+    '#return_value' => 1,
   );
   $form['comment'] = array(
     '#title' => t('Add a comment'),
@@ -91,5 +92,8 @@ function metrodora_qa_form($form, &$form_state, $pid = NULL) {
  */
 function metrodora_qa_form_submit($form, &$form_state) {
   // You need the have Devel module enabled for dpm() to work.
+  global $user;
+  $uid = $user->uid;
+  dpm($uid);
   dpm($form_state);
 }
