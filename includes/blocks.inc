@@ -69,7 +69,6 @@ function metrodora_qa_form($form, &$form_state, $pid = NULL) {
     '#type' => 'checkboxes',
     '#options' => $qaoptions,
     '#required' => TRUE,
-    '#return_value' => 1,
   );
   $form['comment'] = array(
     '#title' => t('Add a comment'),
