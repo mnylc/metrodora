@@ -52,11 +52,11 @@ function metrodora_qa_form($form, &$form_state, $pid = NULL) {
     return [];
   }
   $qaoptions = array(
-    'all_good' => t('Object looks good!'),
+    'good' => t('Object looks good!'),
     'media_missing' => t('Media has problems.'),
     'metadata_missing' => t('Metadata is incomplete.'),
-    'metadata_wrong' => t('One/more-than-one Metadata value is wrong.'),
-    'other_wrong' => t('There are other issues'),
+    'metadata_value_wrong' => t('One/more-than-one Metadata value is wrong.'),
+    'other_issue' => t('There are other issues'),
   );
 
   # the drupal checkboxes form field definition
@@ -76,7 +76,7 @@ function metrodora_qa_form($form, &$form_state, $pid = NULL) {
     '#type' => 'textfield',
     '#size' => '45',
     '#maxlength' => '254',
-    '#description' => t('This field is optional'),
+    '#description' => t('This field is optional.'),
   );
 
   $form['submit'] = array(
@@ -96,4 +96,15 @@ function metrodora_qa_form_submit($form, &$form_state) {
   $uid = $user->uid;
   dpm($uid);
   dpm($form_state);
+  $data = array(
+    'pid' => $form_state['values']['pid'],
+    'comment' => trim($form_state['values']['comment']),
+    'good' => $form_state['values']['qa']['good'] ? 1 : 0,
+    'media_missing' => $form_state['values']['qa']['media_missing'] ? 1 : 0,
+    'metadata_missing' => $form_state['values']['qa']['metadata_missing'] ? 1 : 0,
+    'metadata_value_wrong' => $form_state['values']['qa']['metadata_value_wrong'] ? 1 : 0,
+    'other_issue' => $form_state['values']['qa']['other_issue'] ? 1 : 0,
+    'uid' => $uid
+   );
+  dpm($data);
 }
