@@ -59,9 +59,9 @@ function metrodora_qa_merge_object($pid, $data) {
 function metrodora_qa_get($pid) {
   if ($pid !== NULL) {
     $entry = db_select('metrodora_object_qa', 'q')
-      ->fields('q', '*')
+      ->fields('q')
       ->execute();
-    return $entry->fetchCol();
+    return $entry->fetchAssoc();
   }
 }
 
