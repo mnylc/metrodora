@@ -76,7 +76,6 @@ function metrodora_qa_form($form, &$form_state, $pid = NULL) {
     '#size' => '45',
     '#maxlength' => '254',
     '#description' => t('This field is optional'),
-    '#options' => $qaoptions,
   );
 
   $form['submit'] = array(
