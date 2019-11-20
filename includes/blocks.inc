@@ -53,6 +53,8 @@ function metrodora_qa_form($form, &$form_state, $pid = NULL) {
   }
   module_load_include('inc','metrodora','includes/db');
   $current_entry = metrodora_qa_get($pid);
+  // Returns boolean if it fails.
+  $current_entry = is_array($current_entry) ? $current_entry : [];
   $comment = isset($current_entry['comment']) ? $current_entry['comment'] : '';
   unset($current_entry['pid']);
   unset($current_entry['comment']);
