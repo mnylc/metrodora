@@ -27,6 +27,7 @@ function metrodora_views_data() {
     ],
     'pid' => [
       'title' => t('PID of the object.'),
+      'help' => t('Islandoda Objects PID.'),
       'relationship' => [
         // The name of the table to join with.
         'base' => 'islandora_batch_queue',
@@ -37,6 +38,22 @@ function metrodora_views_data() {
         'title' => t('PID in Batch Set'),
         'help' => t('More information on this relationship'),
       ],
+    ],
+    'pid_no_batch' => [
+      'title' => t('PID of the object, but not in batch.'),
+      'help' => t('Islandoda Objects PID that does not exist in batch queue.'),
+      'real field' => 'pid',
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => [
+        'handler' => 'views_handler_filter_string',
+      ],
+      'argument' => [
+        'handler' => 'views_handler_argument_string',
+      ],
+      'sort' => array('handler' => 'views_handler_sort'),
     ],
     'comment' => [
       'title' => t('QA Comment'),
@@ -56,7 +73,8 @@ function metrodora_views_data() {
       ],
     ],
     'good' => [
-      'title' => t('Boolean indicating if the Object is good.'),
+      'title' => t('Object is good.'),
+      'help' => t('Boolean indicating if the Object is good.'),
       'field' => [
         'handler' => 'views_handler_field_boolean',
         'click sortable' => TRUE,
@@ -64,7 +82,7 @@ function metrodora_views_data() {
       'filter' => [
         'handler' => 'views_handler_filter_boolean_operator',
         // Note that you can override the field-wide label.
-        'label' => t('Published'),
+        'label' => t('Good'),
         // This setting is used by the boolean filter handler, as possible option.
         'type' => 'yes-no',
         // use boolean_field = 1 instead of boolean_field <> 0 in WHERE statement.
@@ -75,7 +93,8 @@ function metrodora_views_data() {
       ],
     ],
     'media_missing' => [
-      'title' => t('Boolean indicating if the Object mas Media Missing.'),
+      'title' => t('Media Missing.'),
+      'help' => t('Boolean indicating if the Object mas Media Missing.'),
       'field' => [
         'handler' => 'views_handler_field_boolean',
         'click sortable' => TRUE,
@@ -83,7 +102,7 @@ function metrodora_views_data() {
       'filter' => [
         'handler' => 'views_handler_filter_boolean_operator',
         // Note that you can override the field-wide label.
-        'label' => t('Published'),
+        'label' => t('Missing Media'),
         // This setting is used by the boolean filter handler, as possible option.
         'type' => 'yes-no',
         // use boolean_field = 1 instead of boolean_field <> 0 in WHERE statement.
@@ -94,7 +113,8 @@ function metrodora_views_data() {
       ],
     ],
     'metadata_missing' => [
-      'title' => t('Boolean indicating if the Object has Metadata Missing.'),
+      'title' => t('Metadata Missing.'),
+      'help' => t('Boolean indicating if the Object has Metadata Missing.'),
       'field' => [
         'handler' => 'views_handler_field_boolean',
         'click sortable' => TRUE,
@@ -102,7 +122,7 @@ function metrodora_views_data() {
       'filter' => [
         'handler' => 'views_handler_filter_boolean_operator',
         // Note that you can override the field-wide label.
-        'label' => t('Published'),
+        'label' => t('Metadata'),
         // This setting is used by the boolean filter handler, as possible option.
         'type' => 'yes-no',
         // use boolean_field = 1 instead of boolean_field <> 0 in WHERE statement.
@@ -114,6 +134,9 @@ function metrodora_views_data() {
     ],
     'metadata_value_wrong' => [
       'title' => t(
+        'Wrong metadata value.'
+      ),
+      'help' => t(
         'Boolean indicating if the Object has a Wrong metadata value.'
       ),
       'field' => [
@@ -134,7 +157,9 @@ function metrodora_views_data() {
       ],
     ],
     'other_issue' => [
-      'title' => t('Boolean indicating if the Object has other issues.'),
+      'title' => t('Other issues.'),
+      'help' => t('Boolean indicating if the Object has other issues.'),
+
       'field' => [
         'handler' => 'views_handler_field_boolean',
         'click sortable' => TRUE,
