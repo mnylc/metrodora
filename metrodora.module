@@ -405,3 +405,13 @@ function metrodora_block_save($delta = '', $edit = []) {
       break;
   }
 }
+
+/**
+ * Implements hook_views_api().
+ */
+function metrodora_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'metrodora') . '/views',
+  );
+}
